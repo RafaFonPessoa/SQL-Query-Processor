@@ -1,52 +1,76 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
-  #output {
-    margin-top: 20px;
-  }
-  
-  pre {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border: 1px solid #ddd;
-    overflow-x: auto;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  background-color: #1b1b1b;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #439de7;
+  border-radius: 15px;
+  color:#1b1b1b;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 96%;
+  height: 150px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  resize: none;
+  background-color: #fff;
+  color: #333;
+
+}
+
+textarea:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color:#28a745;
+  color: #1b1b1b;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+#output {
+  margin-top: 30px;
+}
+
+h3 {
+  margin-top: 20px;
+  font-size: 1.5em;
+}
+
+pre {
+  background-color: #f8f9fa;
+  color: #333;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow-x: auto;
+}
