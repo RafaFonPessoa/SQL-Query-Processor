@@ -3,27 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Query Processor</title>
   <link rel="stylesheet" href="style.css">
+  <title>SQL Query Processor</title>
 </head>
 <body>
   <div class="container">
     <h1>SQL Query Processor</h1>
-    <textarea id="queryInput" placeholder="Digite Uma Query Sql"></textarea>
-    <button id="processQueryBtn">Processar a Query</button>
-    
+    <textarea id="queryInput" placeholder="Digite sua consulta SQL aqui"></textarea>
+    <button id="processQueryBtn">Processar Consulta</button>
+
     <div id="output">
-      <h3>Operações:</h3>
+      <h3>Resultado da Consulta</h3>
       <pre id="parsedQuery"></pre>
 
-      <h3>Grafo de Execução:</h3>
-      <div id="operatorGraph"></div>
+      <h3>Gráfico de Operadores</h3>
+      <pre id="operatorGraph"></pre>
 
-      <h3>Passos Execultados:</h3>
+      <h3>Plano de Execução</h3>
       <pre id="executionPlan"></pre>
     </div>
   </div>
-  
-  <script src="script.js"></script>
+
+  <script src="js/schema.js"></script>
+  <script src="js/queryProcessor.js"></script>
+  <script src="js/ui.js"></script>
 </body>
 </html>
