@@ -17,7 +17,7 @@ document.getElementById('processQueryBtn').addEventListener('click', function() 
       return;
     }
   
-    const operatorGraph = generateOperatorGraph(parsed);
+    const operatorGraph = sqlToAlgebraRelacional(query);
     const executionPlan = generateExecutionPlan(operatorGraph);
     
     displayResults(parsed, operatorGraph, executionPlan);
