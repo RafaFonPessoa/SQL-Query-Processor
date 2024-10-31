@@ -53,10 +53,10 @@ function validateTablesAndColumns(parsed) {
 
     // Se a coluna tem um prefixo de tabela
     if (tableName) {
-      if (!involvedTables.has(tableName)) {
-        alert(`A tabela "${tableName}" não está envolvida na consulta.`);
-        return false;
-      }
+      // if (!involvedTables.has(tableName)) {
+      //   alert(`A tabela "${tableName}" não está envolvida na consulta.`);
+      //   return false;
+      // }
     } else {
       // Se não há prefixo, verifica nas tabelas envolvidas
       const existsInAnyTable = [...involvedTables].some(table => schema[table].includes(column));
@@ -81,59 +81,66 @@ function validateTablesAndColumns(parsed) {
 
   
 function sqlToAlgebraRelacional(sql) {
-  // Remove espaços em branco adicionais e transforma em letras minúsculas
-  sql = sql.trim().toLowerCase();
+    // Remover espaços extras e dividir as partes principais
+    const sqlParts = sql.trim().replace(/\s+/g, ' ').split(" ");
+    
+    // Pegar a lista de colunas
+    const selectIndex = sqlParts.indexOf("SELECT");
+    const fromIndex = sqlParts.indexOf("FROM");
+    const whereIndex = sqlParts.indexOf("WHERE");
+    const joinIndex = sqlParts.indexOf("JOIN");
 
-  // Verifica se a consulta é do tipo SELECT
-  if (!sql.startsWith("select")) {
-    throw new Error("A consulta deve começar com SELECT");
-  }
+    const columns = sqlParts.slice(selectIndex + 1, fromIndex).join(" ").split(",").map(col => col.trim());
 
-  // Extrai os campos de seleção
-  const selectMatch = sql.match(/select (.+?) from/i);
-  if (!selectMatch) {
-    throw new Error("Não foi possível extrair os campos da consulta");
-  }
-  const fields = selectMatch[1].split(",").map(field => field.trim());
+    // Pegar a tabela principal
+    const mainTable = sqlParts[fromIndex + 1];
 
-  // Extrai as tabelas da consulta
-  const fromMatch = sql.match(/from (.+?)( join | where|$)/i);
-  if (!fromMatch) {
-    throw new Error("Não foi possível extrair as tabelas da consulta");
-  }
+    // Pegar a condição WHERE, se houver
+    let whereCondition = "";
+    if (whereIndex !== -1) {
+        whereCondition = sqlParts.slice(whereIndex + 1).join(" ");
+    }
 
-  const tables = [fromMatch[1].trim()];  // Tabela principal
-  
-  // Extrai as junções e condições ON
-  const joinMatches = [...sql.matchAll(/join (.+?) on (.+?)( join| where|$)/g)];
-  
-  let joinConditions = [];
-  
-  joinMatches.forEach(match => {
-    const joinTable = match[1].trim();
-    const joinCondition = match[2].trim();
-    tables.push(joinTable);
-    joinConditions.push(joinCondition);
-  });
+    // Pegar a condição de JOIN, se houver
+    let joinTable = "";
+    let joinCondition = "";
+    if (joinIndex !== -1) {
+        joinTable = sqlParts[joinIndex + 1];
+        joinCondition = sqlParts.slice(joinIndex + 3, whereIndex !== -1 ? whereIndex : sqlParts.length).join(" ");
+    }
 
-  // Monta a álgebra relacional
-  let algebra = '';
-  if (joinConditions.length > 0) {
-    // Se houver condições de junção
-    const joinExpression = `σ(${joinConditions.join(' ∧ ')})(${tables.join(' ⨝ ')})`;
-    algebra = `π(${fields.join(', ')})(${joinExpression})`;
-  } else {
-    // Produto cartesiano se não houver junção
-    algebra = `π(${fields.join(', ')})(${tables.join(' × ')})`;
-  }
+    // Construir a álgebra relacional
+    let relationalAlgebra = "";
 
-  alert(algebra);
-  return algebra;
+    // Adicionar projeção
+    relationalAlgebra += `π_{${columns.join(", ")}}(`;
+
+    // Adicionar seleção para WHERE
+    if (whereCondition) {
+        relationalAlgebra += `σ_{${whereCondition}}(`;
+    }
+
+    // Adicionar produto cartesiano ou junção
+    if (joinTable) {
+        relationalAlgebra += `${mainTable} ⨝_{${joinCondition}} ${joinTable}`;
+    } else {
+        relationalAlgebra += mainTable;
+    }
+
+    // Fechar parênteses das seleções
+    if (whereCondition) {
+        relationalAlgebra += ')';
+    }
+
+    // Fechar parênteses da projeção
+    relationalAlgebra += ')';
+
+    return relationalAlgebra;
 }
 
 
   
-function generateExecutionPlan(graph) {
+function generateExecutionGraph(graph) {
   // return graph.map((node, index) => `Passo ${index + 1}: ${node.operator} sobre ${node.details}`).join('\n');
 
 }

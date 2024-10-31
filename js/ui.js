@@ -18,16 +18,16 @@ document.getElementById('processQueryBtn').addEventListener('click', function() 
     }
   
     const operatorGraph = sqlToAlgebraRelacional(query);
-    const executionPlan = generateExecutionPlan(operatorGraph);
+    console.log(operatorGraph)
+    const executionPlan = generateExecutionGraph(operatorGraph);
     
     displayResults(parsed, operatorGraph, executionPlan);
   });
   
-  function displayResults(parsed, graph, executionPlan) {
+  function displayResults(parsed, operatorGraph, executionPlan) {
     document.getElementById('parsedQuery').textContent = JSON.stringify(parsed, null, 2);
-    
-    const graphOutput = graph.map(node => `${node.operator}(${node.details})`).join(' -> ');
-    document.getElementById('operatorGraph').textContent = graphOutput;
+    console.log(operatorGraph)
+    document.getElementById('operatorGraph').textContent = operatorGraph;
     
     document.getElementById('executionPlan').textContent = executionPlan;
   }
